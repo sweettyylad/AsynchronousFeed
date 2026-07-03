@@ -1,6 +1,5 @@
 import { ValidationException } from '../common/exceptions';
-
-const MAX_QUERY_LENGTH = 100;
+import { MAX_QUERY_LENGTH } from './query.constants';
 
 export function normalizeQuery(query: string): string {
   const normalized = query.trim().replace(/\s+/g, ' ').toLowerCase();
@@ -10,7 +9,9 @@ export function normalizeQuery(query: string): string {
   }
 
   if (normalized.length > MAX_QUERY_LENGTH) {
-    throw new ValidationException('Query must be at most 100 characters');
+    throw new ValidationException(
+      `Query must be at most ${MAX_QUERY_LENGTH} characters`,
+    );
   }
 
   return normalized;

@@ -63,11 +63,28 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
       const response = exception.getResponse();
+      const message = this.extractMessage(response, exception.message);
+
+      if (status === 400 && this.isJsonParseMessage(message)) {
+        return {
+          status,
+          code: 'VALIDATION_ERROR',
+          message: 'Invalid JSON body',
+        };
+      }
 
       return {
         status,
         code: this.mapHttpStatusToCode(status),
-        message: this.extractMessage(response, exception.message),
+        message,
+      };
+    }
+
+    if (this.isBodyParserSyntaxError(exception)) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        code: 'VALIDATION_ERROR',
+        message: 'Invalid JSON body',
       };
     }
 
@@ -108,5 +125,21 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     return fallback;
+  }
+
+  private isBodyParserSyntaxError(exception: unknown): boolean {
+    if (!(exception instanceof SyntaxError)) {
+      return false;
+    }
+
+    if (!('status' in exception)) {
+      return false;
+    }
+
+    return exception.status === HttpStatus.BAD_REQUEST;
+  }
+
+  private isJsonParseMessage(message: string): boolean {
+    return message.toLowerCase().includes('json');
   }
 }

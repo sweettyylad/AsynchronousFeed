@@ -1,16 +1,16 @@
-import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { afterAll, beforeAll, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
-import { Server } from 'node:http';
 
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { ResponseEnvelopeInterceptor } from './common/interceptors/response-envelope.interceptor';
+import { jsonParseErrorMiddleware } from './common/middleware/json-parse-error.middleware';
 import { PrismaService } from './prisma/prisma.service';
 
 describe('App skeleton', () => {
-  let app: INestApplication;
+  let app: NestExpressApplication;
 
   beforeAll(async () => {
     process.env.DATABASE_URL =
@@ -24,7 +24,12 @@ describe('App skeleton', () => {
       .useValue({ ping: jest.fn<() => Promise<void>>().mockResolvedValue() })
       .compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleRef.createNestApplication<NestExpressApplication>({
+      bodyParser: false,
+    });
+    app.useBodyParser('json');
+    app.useBodyParser('urlencoded', { extended: true });
+    app.use(jsonParseErrorMiddleware);
     app.useGlobalFilters(new GlobalExceptionFilter());
     app.useGlobalInterceptors(new ResponseEnvelopeInterceptor());
     await app.init();
@@ -35,7 +40,7 @@ describe('App skeleton', () => {
   });
 
   it('wraps GET /health in a success envelope', async () => {
-    const server = app.getHttpServer() as Server;
+    const server = app.getHttpServer();
 
     await request(server)
       .get('/health')
@@ -48,7 +53,7 @@ describe('App skeleton', () => {
   });
 
   it('wraps unknown routes in an error envelope', async () => {
-    const server = app.getHttpServer() as Server;
+    const server = app.getHttpServer();
 
     await request(server)
       .get('/missing')
@@ -60,6 +65,26 @@ describe('App skeleton', () => {
           error: {
             code: 'NOT_FOUND',
             message: expect.any(String),
+          },
+        });
+      });
+  });
+
+  it('wraps malformed JSON body in a validation error envelope', async () => {
+    const server = app.getHttpServer();
+
+    await request(server)
+      .post('/api/searches')
+      .set('Content-Type', 'application/json')
+      .send('{"query":')
+      .expect(400)
+      .expect(({ body }) => {
+        expect(body).toEqual({
+          success: false,
+          data: null,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message: 'Invalid JSON body',
           },
         });
       });
