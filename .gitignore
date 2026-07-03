@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+frontend/dist/
+src/generated/
+
+# environment
+.env
+.env.local
+.env.*.local
+
+# tests
+coverage/
+
+# logs
+*.log
+npm-debug.log*
+
+# IDE / OS
+.claude/settings.local.json
+.idea/
+.vscode/
+.DS_Store
+
+# misc
+*.tsbuildinfo

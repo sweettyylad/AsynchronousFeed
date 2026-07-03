@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SearchStatus {
+  PENDING
+  READY
+  FAILED
+}
+
+model SearchResult {
+  id        String       @id @default(uuid())
+  /// Нормализованный текст upstream-запроса ("cat" или "cat graffiti").
+  /// Единица кэширования (ASSUMPTIONS A4).
+  query     String       @unique
+  status    SearchStatus
+  /// Массив постов [{url, width, height, tags[]}] как JSONB.
+  /// Обоснование JSON vs отдельная таблица — DESIGN § Trade-offs T3.
+  items     Json         @default("[]")
+  /// Сообщение об ошибке при status=FAILED.
+  error     String?
+  /// Момент успешного ответа upstream; NULL пока не было ни одного успеха.
+  /// База для правила "не старше 1 часа" (R9).
+  fetchedAt DateTime?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("search_results")
+}

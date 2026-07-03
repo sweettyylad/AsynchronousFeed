@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Feed</title>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="search-bar" aria-label="Image search">
+        <form id="search-form" class="search-form">
+          <label class="search-label" for="query-input">Search</label>
+          <div class="search-controls">
+            <input
+              id="query-input"
+              class="search-input"
+              name="query"
+              type="search"
+              maxlength="100"
+              autocomplete="off"
+              required
+            />
+            <button class="search-button" type="submit">Search</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="status-region" class="status-region" aria-live="polite"></section>
+      <section id="feed-root" class="feed-list" aria-label="Search results"></section>
+    </main>
+  </body>
+</html>

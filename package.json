@@ -1,0 +1,61 @@
+{
+  "name": "voicepop-image-feed",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Image feed test task: paired image search feed with backend-side caching",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "format": "prettier --write \"{src,test}/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:int": "jest --config jest.integration.config.js --runInBand",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy"
+  },
+  "dependencies": {
+    "@nestjs/common": "11.1.27",
+    "@nestjs/config": "4.0.4",
+    "@nestjs/core": "11.1.27",
+    "@nestjs/platform-express": "11.1.27",
+    "@nestjs/serve-static": "5.0.5",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "7.8.0",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.15.1",
+    "nestjs-pino": "4.6.1",
+    "pg": "^8.22.0",
+    "pino": "10.3.1",
+    "pino-http": "11.0.0",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "undici": "8.6.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@nestjs/cli": "11.0.23",
+    "@nestjs/testing": "11.1.27",
+    "@testcontainers/postgresql": "12.0.4",
+    "@types/node": "26.1.0",
+    "@types/supertest": "7.2.0",
+    "eslint": "10.6.0",
+    "jest": "30.4.2",
+    "prettier": "3.9.4",
+    "prisma": "7.8.0",
+    "supertest": "7.2.2",
+    "testcontainers": "12.0.4",
+    "ts-jest": "29.4.11",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.62.1"
+  }
+}
