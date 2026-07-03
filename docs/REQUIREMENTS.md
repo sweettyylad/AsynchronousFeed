@@ -60,7 +60,7 @@
   Цитата: *«The application with all its dependencies must be wrapped in Docker Compose»* (Task Overview).
   Интерпретация: `docker compose up` поднимает приложение + PostgreSQL, миграции применяются автоматически.
 
-- [ ] **R13. Приложение доступно по ссылке.**
+- [x] **R13. Приложение доступно по ссылке.**
   Цитаты: *«The web application must be accessible via a link»* (Task Overview), *«A link to the web application»* (Deliverables).
   Интерпретация: нужен деплой на публичный хост (VPS / Fly.io / Railway и т.п.). Отдельный финальный шаг плана.
 
