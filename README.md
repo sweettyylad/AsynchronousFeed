@@ -55,6 +55,7 @@ frontend/           # Vite + TS: одна страница с polling
 | [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) | Чек-листы явных и неявных требований, скоуп, критерии оценки |
 | [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) | Все неоднозначности задания и принятые решения |
 | [docs/DESIGN.md](docs/DESIGN.md) | Архитектура, схема данных, контракты API, обработка ошибок, trade-offs |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Mermaid-схемы runtime/deploy view, backend layers и submit/poll flow |
 | [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) | Пошаговый план с критериями готовности и планом тестирования |
 
 ## API (сводка)
