@@ -78,7 +78,7 @@ export class FeedService {
     const rightQuery = buildGraffitiQuery(query);
     const pair = await this.repository.findByQueries([query, rightQuery]);
 
-    if (!pair.left && !pair.right) {
+    if (!pair.left || !pair.right) {
       throw new FeedNotFoundException();
     }
 

@@ -212,6 +212,22 @@ describe('FeedService', () => {
     ).rejects.toBeInstanceOf(FeedNotFoundException);
   });
 
+  it('throws FeedNotFoundException when only one side was ever submitted', async () => {
+    const repository = createRepositoryMock();
+    const provider = createProviderMock();
+    repository.findByQueries.mockResolvedValue({
+      left: createRecord('cat graffiti', SearchStatus.READY, [leftItem]),
+      right: null,
+    });
+
+    await expect(
+      new FeedService(
+        repository as unknown as SearchResultRepository,
+        provider as unknown as ImageProviderService,
+      ).getFeed('cat graffiti'),
+    ).rejects.toBeInstanceOf(FeedNotFoundException);
+  });
+
   it('never calls provider while reading a feed', async () => {
     const repository = createRepositoryMock();
     const provider = createProviderMock();
