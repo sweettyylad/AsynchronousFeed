@@ -1,4 +1,5 @@
 import { Feed, FeedSide, ImageItem } from './api';
+import { attachImageRetry } from './image-retry';
 
 export type ViewState =
   | { kind: 'idle' }
@@ -91,6 +92,7 @@ function renderImageSide(side: FeedSide, item: ImageItem): HTMLElement {
   image.loading = 'lazy';
   image.width = item.width;
   image.height = item.height;
+  attachImageRetry(image, item.url);
 
   column.append(image, renderTags(item.tags));
   return column;
